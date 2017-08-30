@@ -1,0 +1,384 @@
+# rc.txt for danaus13
+#!nsh
+
+echo "[init] Pixhawk Quad startup ..."
+
+#
+# Start the ORB (first app to start)
+#
+uorb start
+
+#
+# Load parameters
+#
+set PARAM_FILE /fs/microsd/params
+if mtd start
+then
+    set PARAM_FILE /fs/mtd_params
+fi
+
+param select $PARAM_FILE
+if param load
+then
+    echo "[param] Loaded: $PARAM_FILE"
+else
+    echo "[param] FAILED loading $PARAM_FILE"
+    if param reset
+    then
+    fi
+fi
+
+set SET_LOCAL_PARAMS no
+
+if [ $SET_LOCAL_PARAMS == yes ]
+then
+    # MAVlink Setup
+    echo "[init] MAVlink Parameters Setup"
+    param set MAV_BASE_ID 111
+    param set MAV_SYS_ID  205
+    param set MAV_COMP_ID 1
+    param set MAV_FWDEXTSP 1
+    param set MAV_RADIO_ID    0
+    param set MAV_TEST_PAR    1
+    param set MAV_TYPE    2
+    param set MAV_USEHILGPS   0
+
+# tone 1
+tone_alarm negative
+
+    # LED RGB
+    echo "[init] LED RGB Parameters Setup"
+    param set LED_RGB_MAXBRT  1
+
+    # Sensor Calibration
+    echo "[init] Sensor Calibration Parameters Setup"
+    param set SENS_BARO_QNH 1013.25
+    param set SENS_BOARD_ROT 0
+    param set SENS_BOARD_X_OFF 0.843764483928680420
+    param set SENS_BOARD_Y_OFF -0.431177109479904175
+    param set SENS_BOARD_Z_OFF 0.000000000000000000
+    param set SENS_DPRES_ANSC 0.000000000000000000
+    param set SENS_DPRES_OFF 0.000000000000000000
+    param set SENS_EN_LL40LS 0
+    param set SENS_EN_SF0X 0
+    param set CAL_ACC0_BAX0 0.000
+    param set CAL_ACC0_BAX1 0.000
+    param set CAL_ACC0_BAX2 0.000
+    param set CAL_ACC0_BAY0 0.000
+    param set CAL_ACC0_BAY1 0.000
+    param set CAL_ACC0_BAY2 0.000
+    param set CAL_ACC0_BAZ0 0.000
+    param set CAL_ACC0_BAZ1 0.000
+    param set CAL_ACC0_BAZ2 0.000
+    param set CAL_ACC0_ID 1246218
+    param set CAL_ACC0_XOFF 0.030924320220947266
+    param set CAL_ACC0_XSCALE 1.000055551528930664
+    param set CAL_ACC0_YOFF -0.134822368621826172
+    param set CAL_ACC0_YSCALE 0.994469463825225830
+    param set CAL_ACC0_ZOFF -0.318480491638183594
+    param set CAL_ACC0_ZSCALE 0.992200434207916260
+    param set CAL_ACC1_ID 1114634
+    param set CAL_ACC1_XOFF 1.226706027984619141
+    param set CAL_ACC1_XSCALE 0.984696567058563232
+    param set CAL_ACC1_YOFF 0.991636276245117188
+    param set CAL_ACC1_YSCALE 1.006175160408020020
+    param set CAL_ACC1_ZOFF 1.427454471588134766
+    param set CAL_ACC1_ZSCALE 1.036932826042175293
+    param set CAL_ACC_PRIME 1246218
+    param set CAL_BARO_PRIME 0
+    param set CAL_GYRO0_BWX0 0.000
+    param set CAL_GYRO0_BWX1 0.000
+    param set CAL_GYRO0_BWX2 0.000
+    param set CAL_GYRO0_BWY0 0.000
+    param set CAL_GYRO0_BWY1 0.000
+    param set CAL_GYRO0_BWY2 0.000
+    param set CAL_GYRO0_BWZ0 0.000
+    param set CAL_GYRO0_BWZ1 0.000
+    param set CAL_GYRO0_BWZ2 0.000
+    param set CAL_GYRO0_ID 2163722
+    param set CAL_GYRO0_XOFF 0.002719300333410501
+    param set CAL_GYRO0_XSCALE 1.000000000000000000
+    param set CAL_GYRO0_YOFF 0.020121166482567787
+    param set CAL_GYRO0_YSCALE 1.000000000000000000
+    param set CAL_GYRO0_ZOFF 0.005614588502794504
+    param set CAL_GYRO0_ZSCALE 1.000000000000000000
+    param set CAL_GYRO1_ID 2228490
+    param set CAL_GYRO1_XOFF 0.003434843616560102
+    param set CAL_GYRO1_XSCALE 1.000000000000000000
+    param set CAL_GYRO1_YOFF -0.001764530083164573
+    param set CAL_GYRO1_YSCALE 1.000000000000000000
+    param set CAL_GYRO1_ZOFF -0.006280546076595783
+    param set CAL_GYRO1_ZSCALE 1.000000000000000000
+    param set CAL_GYRO_PRIME 2163722
+    param set CAL_MAG0_ID 131594
+    param set CAL_MAG0_MXX 1.000
+    param set CAL_MAG0_MXY 0.000
+    param set CAL_MAG0_MXZ 0.000
+    param set CAL_MAG0_MYX 0.000
+    param set CAL_MAG0_MYY 1.000
+    param set CAL_MAG0_MYZ 0.000
+    param set CAL_MAG0_MZX 0.000
+    param set CAL_MAG0_MZY 0.000
+    param set CAL_MAG0_MZZ 1.000
+    param set CAL_MAG0_ROT -1
+    param set CAL_MAG0_XOFF -0.113181218504905701
+    param set CAL_MAG0_XSCALE 1.000000000000000000
+    param set CAL_MAG0_YOFF -0.160550802946090698
+    param set CAL_MAG0_YSCALE 1.000000000000000000
+    param set CAL_MAG0_ZOFF -0.207486912608146667
+    param set CAL_MAG0_ZSCALE 1.000000000000000000
+    param set CAL_MAG1_ID 0
+    param set CAL_MAG1_ROT -1
+    param set CAL_MAG2_ID 0
+    param set CAL_MAG2_ROT -1
+    param set CAL_MAG_PRIME 131594
+    param set CAL_MAG_SIDES 63
+
+# tone 2
+tone_alarm negative
+
+    # PWM AUX Setup
+    echo "[init] PWM AUX Parameters Setup"
+    param set PWM_AUX_DISARMED 800
+    param set PWM_AUX_MIN 1100
+    param set PWM_AUX_MAX 1860
+    param set PWM_AUX_REV1 0
+    param set PWM_AUX_REV2 0
+    param set PWM_AUX_REV3 0
+    param set PWM_AUX_REV4 0
+    param set PWM_AUX_REV5 0
+    param set PWM_AUX_REV6 0
+
+# tone 3
+tone_alarm negative
+
+    # Physical Parameters
+    echo "[init] Physical Parameters Setup"
+    param set MCC_ARM_LENGTH 0.1103
+    param set MCC_CT 8.0329e-9
+    param set MCC_GRAVITY 9.80665
+    param set MCC_INERTIA_XX  0.0032765
+    param set MCC_INERTIA_XY  0.0000009
+    param set MCC_INERTIA_XZ -0.0000098
+    param set MCC_INERTIA_YY  0.0029039
+    param set MCC_INERTIA_YZ -0.0000054
+    param set MCC_INERTIA_ZZ  0.0053983
+    param set MCC_MOMENT_SCALE 0.0183
+    param set MCC_MOTOR_CONST 36.5
+    param set MCC_TOTAL_MASS 0.865
+    param set MCC_MOTOR_SPREAD 0.925
+    param set MCC_RPM_MIN 3850.0
+    param set MCC_RPM_MAX 21350.0
+    param set MCC_RPM_START 5000.0
+    param set MCC_MOT_START_DT 0.4
+
+# tone 4
+tone_alarm negative
+
+    # Voltage Compensation Parameters
+    echo "[init] Voltage compensation parameters"
+    param set MCC_RPM2PWM_00 1424.00
+    param set MCC_RPM2PWM_10 253.8
+    param set MCC_RPM2PWM_01 -23.54
+    param set MCC_RPM2PWM_20 23.92
+    param set MCC_RPM2PWM_11 -12.66
+    param set MCC_RPM2PWM_02 0.9593
+    param set MCC_RPM2PWM_30 -0.4091
+    param set MCC_RPM2PWM_21 4.169
+    param set MCC_RPM2PWM_12 1.171
+    param set MCC_RPM2PWM_03 -1.023
+    param set MCC_RPM2PWM_40 -0.5754
+    param set MCC_RPM2PWM_31 1.951
+    param set MCC_RPM2PWM_22 3.875
+    param set MCC_RPM2PWM_13 4.963
+    param set MCC_RPM2PWM_04 0.9361
+    param set MCC_RPM2PWM_50 -1.464
+    param set MCC_RPM2PWM_41 -0.1731
+    param set MCC_RPM2PWM_32 1.096
+    param set MCC_RPM2PWM_23 1.796
+    param set MCC_RPM2PWM_14 2.47
+    param set MCC_RPM2PWM_05 0.7804
+    param set MCC_RPM_M 1.462e+04
+    param set MCC_RPM_SD 6383
+    param set MCC_V_M 11.81
+    param set MCC_V_SD 0.6132
+
+# tone 5
+tone_alarm negative
+
+    # Mocap Attitude Control
+    echo "[init] Mocap Attitude Control Parameters Setup"
+    param set MCC_CMD_TTL 0.3
+
+    # PWM - Mixer Map
+    param set MCC_PWM_MAP1 1
+    param set MCC_PWM_MAP2 2
+    param set MCC_PWM_MAP3 3
+    param set MCC_PWM_MAP4 4
+
+    # PWM Output Rate
+    param set MCC_PWM_RATE 500
+
+# tone 6
+tone_alarm negative
+
+    #L1 Attitude Adaptive Control
+    echo "[init] L1 Adaptive Control Parameters Setup"
+    param set MCC_ENABLE_L1C 1
+    param set L1C_ACTIVE 1
+    param set L1C_BW_X 5.0
+    param set L1C_BW_Y 5.0
+    param set L1C_BW_Z 5.0
+    param set L1C_OBS_GAIN_X 400.0
+    param set L1C_OBS_GAIN_Y 400.0
+    param set L1C_OBS_GAIN_Z 400.0
+    param set L1C_ADAPT_GAIN_X 5.0
+    param set L1C_ADAPT_GAIN_Y 5.0
+    param set L1C_ADAPT_GAIN_Z 10.0
+    param set L1C_INIT_DIST_X 0.0
+    param set L1C_INIT_DIST_Y 0.0
+    param set L1C_INIT_DIST_Z 0.0
+    param set L1C_ENGAGE_LEVEL 0.3
+    param set L1C_ENABLE_DEBUG 1
+
+# tone 7
+tone_alarm negative
+
+    # L1 Position Adaptive Control
+    echo "[init] L1 Position Adaptive Control Parameters Setup"
+    param set MCC_ENABLE_L1P 1
+    param set L1P_ACTIVE 1
+    param set L1P_BW_X 5.0
+    param set L1P_BW_Y 5.0
+    param set L1P_BW_Z 5.0
+    param set L1P_OBS_GAIN_X 100.0
+    param set L1P_OBS_GAIN_Y 100.0
+    param set L1P_OBS_GAIN_Z 100.0
+    param set L1P_ADAPT_GAIN_X 3000.0
+    param set L1P_ADAPT_GAIN_Y 3000.0
+    param set L1P_ADAPT_GAIN_Z 1000.0
+    param set L1P_INIT_DIST_X 0.0
+    param set L1P_INIT_DIST_Y 0.0
+    param set L1P_INIT_DIST_Z 0.0
+    param set L1P_ENGAGE_LEVEL 0.37
+    param set L1P_ENABLE_DEBUG 1
+
+# tone 8
+tone_alarm negative
+
+    # Attitude Estimator
+    echo "[init] Attitude Estimator Parameters Setup"
+    param set ATT_ACC_COMP    2
+    param set ATT_BIAS_MAX    0.050
+    param set ATT_EXT_HDG_M   2
+    param set ATT_MAG_DECL    0.00
+    param set ATT_MAG_DECL_A  1
+    param set ATT_VIBE_THRESH 0.20
+    param set ATT_W_ACC   0.20
+    param set ATT_W_EXT_HDG   1.000
+    param set ATT_W_GYRO_BIAS 0.10
+    param set ATT_W_MAG   0.10
+
+# tone 9
+tone_alarm negative
+
+    # Sensors
+    echo "[init] Battery Parameters Setup"
+    param set BAT_CAPACITY    -1.000
+    param set BAT_C_SCALING   -1.000
+    param set BAT_N_CELLS 3
+    param set BAT_V_CHARGED   4.200
+    param set BAT_V_EMPTY 3.400
+    param set BAT_V_LOAD_DROP 0.070
+    param set BAT_V_SCALE_IO  10000
+    param set BAT_V_SCALING   -1.000
+
+# tone 10
+tone_alarm negative
+
+    # Mocap Status Monitor
+    echo "[init] Mocap Status Monitor Parameters Setup"
+    param set MSM_IGN_THRESH 7.0f
+    param set MSM_LOW_THRESH 10.9f
+    param set MSM_CRIT_THRESH 9.8f
+
+# tone 11
+tone_alarm negative
+
+    # Local Position Estimator
+    echo "[init] Local Position Estimator Parameters Setup"
+    param set LPE_ENABLED 1
+    param set LPE_INTEGRATE 1
+    param set LPE_NO_VISION 0
+    param set LPE_ACC_XY 0.050
+    param set LPE_ACC_Z 0.050
+    param set LPE_BAR_Z 1.000
+    param set LPE_BETA_MAX 1000.000
+    param set LPE_EPH_MAX 3.000
+    param set LPE_FLW_XY 0.010
+    param set LPE_GPS_VXY 0.275
+    param set LPE_GPS_VZ 0.237
+    param set LPE_GPS_XY 2.000
+    param set LPE_GPS_Z 10.000
+    param set LPE_LDR_Z 0.030
+    param set LPE_PN_B 0.000001
+    param set LPE_PN_P 0.000
+    param set LPE_PN_V 0.000
+    param set LPE_SNR_Z 0.200
+    param set LPE_VIC_P 0.005
+    param set LPE_VIS_XY 0.500
+    param set LPE_VIS_Z 0.500
+
+tone_alarm positive
+
+    # Save to the default parameter file
+    param save
+fi
+
+unset SET_LOCAL_PARAMS
+
+#
+# Start system state indicator
+#
+rgbled start
+
+#
+# Sensors System (start before Commander so Preflight checks are properly run)
+#
+set BOARD fmuv2
+echo "[init] Starting the sensors system"
+sh /etc/init.d/rc.sensors
+
+echo "[init] Starting the attitude estimator"
+attitude_estimator_q start
+
+echo "[init] Starting the local position estimator"
+local_position_estimator start
+#
+# Start PWM actuators
+#
+echo "[init] starting FMU with PWM output"
+fmu mode_pwm4
+
+echo "[init] starting mocap control"
+mocap_control start
+
+echo "[init] starting mocap status monitor"
+mocap_status_monitor start
+
+#
+# Start mavlink
+#
+mavlink start -d /dev/ttyS1 -b 921600 -m custom -r 80000 -x
+mavlink stream -s BATTERY_STATUS -r 1 -d /dev/ttyS1
+mavlink stream -s RPM_OUTPUT -r 10 -d /dev/ttyS1
+mavlink start -d /dev/ttyS2 -b 921600 -m custom -r 80000 -x
+mavlink stream -s BATTERY_STATUS -r 1 -d /dev/ttyS2
+mavlink stream -s RPM_OUTPUT -r 10 -d /dev/ttyS2
+
+#
+# Logging
+#
+#sdlog2 start -r 200 -e -b 32 -t
+echo "[init] Init complete"
+tone_alarm startup
